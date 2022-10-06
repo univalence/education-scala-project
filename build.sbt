@@ -7,11 +7,29 @@ lazy val root = project
     version := "0.1.0-SNAPSHOT",
     developers := List( // TODO: replace the following developer by your team developers
       Developer(
-        id    = "johndoe",
-        name  = "John Doe",
-        email = "john.doe@gmail.com",
-        url   = url("https://github.com/johndoe")
-      )
+        id = "flightmodee",
+        name = "Samy Abdouche",
+        email = "samy.abdouche@edu.esiee.fr",
+        url = url("https://github.com/flightmodee")
+      ),
+      Developer(
+      id = "cai-i",
+      name = "Isabelle Cai",
+      email = "isabelle.cai@edu.esiee.fr",
+      url = url("https://github.com/cai-i")
+      ),
+      Developer(
+      id = "axelcoch",
+      name = "COCHET Axel",
+      email = "axel.cochet@edu-esiee.fr",
+      url = url("https://github.com/axelcoch")
+      ),
+      Developer(
+      id = "MelineDang",
+      name = "DANG Méline",
+      email = "meline.dang@hotmail.fr",
+      url = url("https://github.com/MelineDang")
+    )
     ),
     scalaVersion := scala3Version,
     libraryDependencies ++= Seq("org.scalameta" %% "munit" % "0.7.29" % Test)
