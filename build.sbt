@@ -7,7 +7,7 @@ lazy val root = project
     version := "0.1.0-SNAPSHOT",
     developers := List( // TODO: replace the following developer by your team developers
       Developer(
-        id    = "johndoe",
+        id    = "J",
         name  = "John Doe",
         email = "john.doe@gmail.com",
         url   = url("https://github.com/johndoe")
