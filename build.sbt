@@ -13,12 +13,18 @@ lazy val root = project
         url   = url("https://github.com/vrebuffey")
       ),
       Developer(
+        id    = "ChristopheTA",
+        name  = "Christophe TA",
+        email = "christophe.ta@outlook.fr",
+        url   = url("https://github.com/ChristopheTA")
+        ),
+      Developer(
         id    = "theovanrooij",
         name  = "Théo Van Rooij",
         email = "theo.vanrooij@edu.esiee.fr",
         url   = url("https://github.com/theovanrooij")
       ),
-     Developer(
+      Developer(
         id    = "Thomas",
         name  = "Jaillon",
         email = "thomas.jaillon@edu.esiee.fr",
