@@ -8,13 +8,13 @@ lazy val root = project
     developers := List( // TODO: replace the following developer by your team developers
       Developer(
         id = "flightmodee",
-        name = "Samy Abdouche",
+        name = "ABDOUCHE Samy",
         email = "samy.abdouche@edu.esiee.fr",
         url = url("https://github.com/flightmodee")
       ),
       Developer(
       id = "cai-i",
-      name = "Isabelle Cai",
+      name = "CAI Isabelle",
       email = "isabelle.cai@edu.esiee.fr",
       url = url("https://github.com/cai-i")
       ),
