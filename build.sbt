@@ -3,14 +3,14 @@ val scala3Version = "3.2.0"
 lazy val root = project
   .in(file("."))
   .settings(
-    name := "My beautiful project", // TODO: name your project
+    name := "Parser combinator", // TODO: name your project
     version := "0.1.0-SNAPSHOT",
     developers := List( // TODO: replace the following developer by your team developers
       Developer(
-        id    = "johndoe",
-        name  = "John Doe",
-        email = "john.doe@gmail.com",
-        url   = url("https://github.com/johndoe")
+        id    = "theovanrooij",
+        name  = "Théo Van Rooij",
+        email = "theo.vanrooij@edu.esiee.fr",
+        url   = url("https://github.com/theovanrooij")
       )
     ),
     scalaVersion := scala3Version,
