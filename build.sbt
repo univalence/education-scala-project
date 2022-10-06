@@ -10,7 +10,7 @@ lazy val root = project
         id    = "JAndretti",
         name  = "Andretti Jules",
         email = "Jules.andretti@edu.esiee.fr",
-        url   = url("https://github.com/ptitchev/education-scala-project.git")
+        url   = url("https://github.com/ptitchev/education-scala-project/tree/julesA")
       )
     ),
     scalaVersion := scala3Version,
