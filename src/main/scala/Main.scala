@@ -1,25 +1,33 @@
-import java.io.InputStream
+import scala.io.Source
+
+import java.io.PrintWriter
 import java.net.ServerSocket
-import java.net.Socket
 
+object ServerMain {
 
-object Server {
   def main(args: Array[String]): Unit = {
-    val server = new ServerSocket(80)
-    System.out.println("Démarrage du serveur sur 127.0.0.1:80.\r\nAttente d’une connexion...")
-    val client = server.accept
-    System.out.println("Un client s’est connecté.")
-    val in: InputStream = client.getInputStream
-    val out: OutputStream = client.getOutputStream
+    val server = new ServerSocket(8182)
 
-    System.out.println("Démarrage du serveur sur 127.0.0.1:80.\r\nAttente d’une connexion...")
+    try
+      while (true) {
+        val client = server.accept()
+
+        try {
+          val source = Source.fromInputStream(client.getInputStream)
+          for (elem <- source.getLines().takeWhile(_.trim.nonEmpty))
+            println(elem)
+          println("")
+
+          val printer = new PrintWriter(client.getOutputStream)
+          printer.print("HTTP/1.1 200 OK\r\n")
+          printer.print("Date: Tue, 6 Sep 2022 14:01:07 +0200\r\n")
+          printer.print("Content-Type: application/json\r\n")
+          printer.print("\r\n")
+          printer.print("""{"response": "hello"}""")
+          printer.flush()
+        } finally client.close()
+      }
+    finally server.close()
   }
+
 }
-
-class Server {}
-
-import java.io.InputStream
-import java.io.OutputStream
-import java.net.Socket
-
-
