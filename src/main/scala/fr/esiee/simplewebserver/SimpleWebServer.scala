@@ -1,6 +1,6 @@
 package fr.esiee.simplewebserver
 
-object simplewebserver {
+object SimpleWebServer {
 
   def create()
   def listenPort(port)
