@@ -1,52 +1,74 @@
-import scala.io.Source
-
-import java.io.PrintWriter
 import java.net.ServerSocket
+import java.net.Socket
+import scala.io.Source
+import java.io.{PrintWriter, StringWriter}
+import scala.util.Using
 
-//imports ajoutés par Méline
-import java.time.LocalDate
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.time._
 
-object ServerMain {
+object WebServerMain {
 
-  def main(args: Array[String]): Unit = {
-    val server = new ServerSocket(8182)
+  val dateTimeFormatter: DateTimeFormatter =
+    DateTimeFormatter.RFC_1123_DATE_TIME
 
-    try
-      while (true) {
-        val client = server.accept()
+  val port = 8182
 
-        try {
-          val source = Source.fromInputStream(client.getInputStream)
-          for (elem <- source.getLines().takeWhile(_.trim.nonEmpty))
-            println(elem)
+  def main(args: Array[String]): Unit =
+    Using(new ServerSocket(port)) { server =>
+      println(s">>> Listening on port $port...")
+
+      while (true)
+        Using(server.accept()) { client =>
+          println(">>> Get request from a client")
+          readGetRequestFrom(client).foreach(println)
+
           println("")
+          println(readGetRequestFrom(client).head)
 
-          val printer = new PrintWriter(client.getOutputStream)
-          //val date = LocalDate.parse("01/01/2020", DateTimeFormatter.ofPattern("MM/dd/yyyy"))
-          //date.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
-          //print(date.toString)
+          println("")
+          println(">>> Sending response...")
+          sendResponseFrom(client, ZonedDateTime.now())
+        }.fold(
+          error => println(s">>> client connection failure: ${error.getMessage}"),
+          _ => ()
+        )
+    }.get
 
-          val formatterdate = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-          val fDate = formatterdate.format(LocalDate.now)
-          val cTime = LocalTime.now
+  def readGetRequestFrom(client: Socket): List[String] = {
+    val source = Source.fromInputStream(client.getInputStream)
 
-          printer.print("HTTP/1.1 200 OK\r\n")
-          printer.print("Date: Tue, 6 Sep 2022 14:01:07 +0200\r\n")
-          printer.print("Content-Type: application/json\r\n")
-          printer.print("\r\n")
-          //printer.print("""{"response": "hello"}""")
-          printer.print("HTTP/1.1 200 OK\r\n{'response': 'hello'}\r\n")
-          printer.print(s"Nous sommes aujourd'hui le :  ${fDate}")
-          printer.print("\r\n")
-          printer.print(s"Il est actuellement : ${cTime}")
-          printer.print("\r\n")
-
-          printer.flush()
-        } finally client.close()
-      }
-    finally server.close()
+    source
+      .getLines()
+      .takeWhile(_.trim.nonEmpty)
+      .toList
   }
 
+  def sendResponseFrom(client: Socket, now: ZonedDateTime): Unit = {
+    val printer = new PrintWriter(client.getOutputStream)
+
+    printer.print("HTTP/1.1 200 OK\r\n")
+    printer.print(s"Date: ${dateTimeFormatter.format(now)}\r\n")
+    printer.print("Content-Type: text/html\r\n")
+    printer.print("\r\n")
+    printer.print("<b> Hello</b>")
+
+    printer.flush()
+  }
+}
+
+object WebClientMain {
+  def main(args: Array[String]): Unit =
+    Using(new Socket("localhost", WebServerMain.port)) { server =>
+      println(s">>> connected to server ${server.getInetAddress}")
+
+      println(">>> sending request...")
+      val printer = new PrintWriter(server.getOutputStream)
+      printer.print("Hello Server")
+
+      println(">>> waiting for a response...")
+      val responseStream = Source.fromInputStream(server.getInputStream)
+      for (elem <- responseStream.getLines())
+        println(elem)
+    }.get
 }
