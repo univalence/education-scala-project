@@ -1,4 +1,7 @@
 import fr.esiee.simplewebserver.SimpleWebService
+import fr.esiee.simplewebserver.WebResponse
+import fr.esiee.simplewebserver.WebRequest
+package fr.esiee.simplewebserver.simplewebserver
 
 object MyWebServer {
   def main(args: Array[String]): Unit = {
