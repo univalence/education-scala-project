@@ -1,3 +1,21 @@
+import ParseResult.*
+// Common interface for parsers
+trait Parser[A]:
+  /** parse with this and then parse with pb. */
+  def ~[B](pb: => Parser[B]): Parser[(A, B)] = ???
+  /** parse with this, or parse with pb if this fails. */
+  def |[B](pb: Parser[B]): Parser[Either[A, B]] = ???
+  /** try to parse with this. It does not fail if the parsing did not work. */
+  def ? : Parser[Option[A]] = ???
+  /** use this to parse multiple times, until it does not apply. */
+  def repeat: Parser[List[A]] = ???
+  /** convert the value output by the parser. */
+  def map[B](f: A => B): Parser[B] = ???
+  def flatMap[B](f: A => Parser[B]): Parser[B] = ???
+
+  final def parse(s: String): ParseResult[A] = parse(Input(s))
+  def parse(input: Input): ParseResult[A]
+
 // Input of a parser
 // * data: represents the input string
 // * offset: is the pointer on the string, that the parser increases during its processing
@@ -11,5 +29,32 @@ case class Input(data: String, offset: Int = 0):
 // first parser => Input("AABCD", 1)
 // deuxième parser => input.current("BC".length)
 
+object Parser:
+  def createParser[A](f: Input => ParseResult[A]): Parser[A] = input => f(input)
+  /** parse an integer. */
+  def Parser_Int(input: Input): ParseResult[Int]={
+  val current_string = input.current(1)
+  if (current_string.forall(Character.isDigit) | (current_string == "-" & input.offset == 0))
+    Parser_Int(input.next(1))
+  else if (input.offset==0)
+    ParseFailure(input)
+  else
+    ParseSucceed(input.data.substring(0,input.offset).toInt,input)
+  }
+
+  def int: Parser[Int] = createParser(Parser_Int)
+  /** parse exactly the string s */
+  def string(s: String): Parser[String] = createParser(???)
+  /** parse according to a regular expression */
+  def regex(r: String): Parser[String] = createParser(???)
+
+// Result of parse
+enum ParseResult[+A]:
+  case ParseFailure(onInput: Input) extends ParseResult[Nothing]
+  case ParseSucceed(value: A, remainingInput: Input) extends ParseResult[A]
+
+  def map[B](f: A => B): ParseResult[B] = ???
+  def flatMap[B](f: A => ParseResult[B]): ParseResult[B] = ???
+
 @main
-def _01_main(): Unit = println(Input("123456789",2).remaining)
+def _01_main(): Unit = println(Parser.int.parse("12-a"))
