@@ -38,9 +38,9 @@ object ServerMain {
           printer.print("\r\n")
           //printer.print("""{"response": "hello"}""")
           printer.print("HTTP/1.1 200 OK\r\n{'response': 'hello'}\r\n")
-          printer.print("Nous sommes aujourd'hui le :", fDate)
+          printer.print(s"Nous sommes aujourd'hui le :  ${fDate}")
           printer.print("\r\n")
-          printer.print("Il est actuellement :",cTime)
+          printer.print(s"Il est actuellement : ${cTime}")
           printer.print("\r\n")
 
           printer.flush()
