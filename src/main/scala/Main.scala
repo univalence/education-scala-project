@@ -54,10 +54,7 @@ enum ParseResult[+A]:
   def map[B](f: A => B): ParseResult[B] = ???
   def flatMap[B](f: A => ParseResult[B]): ParseResult[B] = ???
 // this class move 1 by 1
-case class Input_1(data: String, offset: Int = 0):
-  def current: String = data.substring(offset,offset+1)
-  def next: Input_1 = copy(offset = offset+1)
-  def remaining: String = data.substring(offset)
+
 
 case class Input(data: String, offset: Int = 0):
   def current(n: Int): String = data.substring(offset,offset+n)
@@ -67,11 +64,9 @@ case class Input(data: String, offset: Int = 0):
 
 @main
 def main(): Unit =
-  // example 1 by 1, we start with offset = 2 so current = 3 (because we start at 0 so 2 is the third value) and the next is 4
-  println("offset start = 2, 1 by 1 \n current : " + Input_1("123456789",2).current)
-  println("offset start = 2, 1 by 1 \n next : " +Input_1("123456789",2).next.current)
 
-  // example with 1 as step, we start with offset = 2 so current = 3  (it acts like 1 by 1 example)
+
+  // example with 1 as step, we start with offset = 2 so current = 3  (it acts  1 by 1 )
   println("offset start = 2, step = 1 \n step = 1, current : " +Input("123456789",2).current(1))
   // example with 3 as step, we start with offset = 2 so current = 345, it takes everything between current(1) and current(3)
   println("offset start = 2, step = 3 \n current : " +Input("123456789",2).current(3))
