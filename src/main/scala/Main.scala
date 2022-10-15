@@ -1,4 +1,5 @@
 import scala.annotation.tailrec
+import ParseResult.*
 
 // Common interface for parsers
 trait Parser[A]:
@@ -22,16 +23,21 @@ object Parser:
 
   /** parse an integer. */
   @tailrec
-  def parse_integer(input: Input): ParseResult[Int] = {
+  def parse_integer(input : Input): ParseResult[Int] = {
     val numeric = """([0-9]+)""".r
-    input match {
-      case numeric(input.current(1)) => parse_integer(input.next(1))
-      case (input.current(1) == "-" & input.offset == 0) => parse_integer(input.next(1))
-      case (input.offset==0) => ParseFailure(input)
-      case _ => ParseSucceed(input.data.substring(0,input.offset).toInt,input)
+    val current_string = input.current(1)
+    current_string match {
+      case numeric(current_string)=>  parse_integer(input.next(1))
+      case "-" => if (input.offset == 0)
+                    parse_integer(input.next(1))
+                  else
+                    ParseFailure(input)
+      case _ => if (input.offset == 0)
+                  ParseFailure(input)
+                else
+                  ParseSucceed(input.data.substring(0, input.offset).toInt, input)
     }
   }
-
   def int: Parser[Int] = createParser(parse_integer)
 
   /** parse exactly the string s */
@@ -75,4 +81,14 @@ def main(): Unit =
   println("offset start = 2, step = 3\n next : " +Input("123456789",2).next(3).current(3))
   // of course we can do some other test like
   println("offset start = 1,  step_next = 3, step_current = 2 \n current : " +Input("123456789",1).next(3).current(2))
+
+  println("\n")
+
+  // example of working parser
+  println(Parser.int.parse("12a"))
+  //example of a failed parser
+  println(Parser.int.parse("A12a"))
+
+  println(Parser.int.parse("-12a"))
+
 
