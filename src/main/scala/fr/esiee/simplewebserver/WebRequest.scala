@@ -8,7 +8,6 @@ class WebRequest {
 
   def readGetRequestFrom(client: Socket): List[String] = {
     val source = Source.fromInputStream(client.getInputStream)
-
     source
       .getLines()
       .takeWhile(_.trim.nonEmpty)
