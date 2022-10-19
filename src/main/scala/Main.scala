@@ -31,7 +31,7 @@ object Parser:
       case "-" => if (input.offset == 0)
                     parse_integer(input.next(1))
                   else
-                    ParseFailure(input)
+                    ParseSucceed(input.data.substring(0, input.offset).toInt, input)
       case _ => if (input.offset == 0)
                   ParseFailure(input)
                 else
@@ -41,6 +41,7 @@ object Parser:
   def int: Parser[Int] = createParser(parse_integer)
 
   /** parse exactly the string s */
+
   def string(s: String): Parser[String] = createParser(???)
 
   /** parse according to a regular expression */
@@ -85,5 +86,7 @@ def main(): Unit =
   println(Parser.int.parse("A12a"))
 
   println(Parser.int.parse("-12a"))
+
+  println(Parser.int.parse("12-a"))
 
 
