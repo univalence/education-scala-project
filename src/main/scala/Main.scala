@@ -32,16 +32,26 @@ case class Input(data: String, offset: Int = 0):
 object Parser:
   def createParser[A](f: Input => ParseResult[A]): Parser[A] = input => f(input)
   /** parse an integer. */
-  def Parser_Int(input: Input): ParseResult[Int]={
-  val current_string = input.current(1)
-  if (current_string.forall(Character.isDigit) | (current_string == "-" & input.offset == 0))
-    Parser_Int(input.next(1))
-  else if (input.offset==0)
-    ParseFailure(input)
-  else
-    ParseSucceed(input.data.substring(0,input.offset).toInt,input)
+  def Parser_Int(input: Input): ParseResult[Int]= {
+    strInt(input.remaining) match {
+      case Some(value) => {
+        if (value.length == input.data.length)
+          ParseSucceed(value.toInt, input.copy(offset = input.data.length-1))
+        else
+          ParseSucceed(value.toInt, input.copy(offset = value.length))
+      }
+      case None => ParseFailure(input)
+    }
   }
-
+  def strInt(string:String) : Option[String] = {
+    string.headOption.flatMap(firstCharacter => firstCharacter match {
+      case '-' => strInt(string.tail).map("-"+_)
+      case _ => string.takeWhile(_.isDigit) match {
+        case "" => None
+        case v => Some(v)
+      }
+    } )
+  }
   def int: Parser[Int] = createParser(Parser_Int)
   /** parse exactly the string s */
   def string(s: String): Parser[String] = createParser(???)
