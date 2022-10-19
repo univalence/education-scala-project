@@ -41,6 +41,15 @@ class MainSuite extends munit.FunSuite {
     
     val parser_failure = ParseFailure(Input("a12",0))
     assertEquals(Parser.int.parse("a12"), parser_failure)
+
+    val parser_failure2 = ParseFailure(Input("-a12", 0))
+    assertEquals(Parser.int.parse("-a12"), parser_failure2)
+
+    val parser_failure3 = ParseFailure(Input("--12", 0))
+    assertEquals(Parser.int.parse("--12"), parser_failure3)
+
+    val parser_succeed5 = ParseSucceed(-12,Input("-12-a", 3))
+    assertEquals(Parser.int.parse("-12-a"), parser_succeed5)
   }
 
 }

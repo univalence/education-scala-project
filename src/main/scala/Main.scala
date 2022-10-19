@@ -1,4 +1,6 @@
 import ParseResult.*
+import scala.util.matching.Regex
+
 // Common interface for parsers
 trait Parser[A]:
   /** parse with this and then parse with pb. */
@@ -33,25 +35,17 @@ object Parser:
   def createParser[A](f: Input => ParseResult[A]): Parser[A] = input => f(input)
   /** parse an integer. */
   def Parser_Int(input: Input): ParseResult[Int]= {
-    strInt(input.remaining) match {
-      case Some(value) => {
-        if (value.length == input.data.length)
-          ParseSucceed(value.toInt, input.copy(offset = input.data.length-1))
+    val regex = new Regex("^-?[0-9]+")
+    val extractInteger = (regex  findAllIn input.data).mkString("")
+    if (extractInteger.isEmpty)
+      ParseFailure(input)
+    else
+      if (extractInteger.length == input.data.length)
+        ParseSucceed(extractInteger.toInt, input.copy(offset = input.data.length-1))
         else
-          ParseSucceed(value.toInt, input.copy(offset = value.length))
-      }
-      case None => ParseFailure(input)
-    }
+        ParseSucceed(extractInteger.toInt, input.copy(offset = extractInteger.length))
   }
-  def strInt(string:String) : Option[String] = {
-    string.headOption.flatMap(firstCharacter => firstCharacter match {
-      case '-' => strInt(string.tail).map("-"+_)
-      case _ => string.takeWhile(_.isDigit) match {
-        case "" => None
-        case v => Some(v)
-      }
-    } )
-  }
+
   def int: Parser[Int] = createParser(Parser_Int)
   /** parse exactly the string s */
   def string(s: String): Parser[String] = createParser(???)
@@ -66,5 +60,10 @@ enum ParseResult[+A]:
   def map[B](f: A => B): ParseResult[B] = ???
   def flatMap[B](f: A => ParseResult[B]): ParseResult[B] = ???
 
+
 @main
-def _01_main(): Unit = println(Parser.int.parse("12-a"))
+def _01_main(): Unit = {
+  val x = new Regex("^-?[0-9]+")
+  val myself = "-8912a45"
+  println(Parser.int.parse("12"))
+}
