@@ -99,6 +99,6 @@ def main(): Unit =
 
   println(Parser.int.parse("12-a"))
 
-  println(Parser.string("A").parse("ABC"))
+  println(Parser.string("AB").parse("ABC"))
 
 
