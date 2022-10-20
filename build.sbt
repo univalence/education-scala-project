@@ -5,12 +5,22 @@ lazy val root = project
   .settings(
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+    name := "Parser_combinator", // TODO: name your project
+=======
+<<<<<<< HEAD
+>>>>>>> julesA
+<<<<<<< HEAD
     name := "Parser Combinator", // TODO: name your project
 =======
     name := "Parser_combinator", // TODO: name your project
 >>>>>>> julesA
 =======
     name := "Parser_combinator", // TODO: name your project
+>>>>>>> julesA
+<<<<<<< HEAD
+=======
+>>>>>>> julesC
 >>>>>>> julesA
     version := "0.1.0-SNAPSHOT",
     developers := List( // TODO: replace the following developer by your team developers
