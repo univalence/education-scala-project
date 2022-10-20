@@ -38,8 +38,8 @@ object Parser:
 
   def createParser[A](f: Input => ParseResult[A]): Parser[A] = input => f(input)
   /** parse an integer. */
-  def parserInt(input: Input): ParseResult[Int]= {
-    
+  def Parser_Int(input: Input): ParseResult[Int]= {
+
     val regex = new Regex("^-?[0-9]+")
     val extractInteger = (regex  findAllIn input.remaining).mkString("")
     if (extractInteger.isEmpty)
@@ -51,7 +51,7 @@ object Parser:
         ParseSucceed(extractInteger.toInt, input.copy(offset = extractInteger.length))
   }
 
-  def int: Parser[Int] = createParser(parserInt)
+  def int: Parser[Int] = createParser(Parser_Int)
 
   def parserString(input: Input, s: String): ParseResult[String] = {
     val currentString = input.current(s.length)
@@ -91,13 +91,26 @@ enum ParseResult[+A]:
   case ParseFailure(onInput: Input) extends ParseResult[Nothing]
   case ParseSucceed(value: A, remainingInput: Input) extends ParseResult[A]
 
-  def map[B](f: A => B): ParseResult[B] = ???
-  def flatMap[B](f: A => ParseResult[B]): ParseResult[B] = ???
+  def map[B](f: A => B): ParseResult[B] =
+    this match
+      case ParseResult.ParseSucceed(value, input) => ParseSucceed(f(value),input)
+      case ParseResult.ParseFailure(input) => ParseResult.ParseFailure(input)
+  def flatMap[B](f: A => ParseResult[B]): ParseResult[B] =
+    this match
+      case ParseResult.ParseSucceed(value,__) => f(value)
+      case ParseResult.ParseFailure(input) => ParseResult.ParseFailure(input)
 
 
 @main
 def _01_main(): Unit = {
   println(Parser.regex("A*C").parse("ABCD"))
+  println(ParseSucceed("AAAB", Input("AAABCD", 4)).flatMap(a =>
+    ParseSucceed(a+"AAB", Input("AABCD", 3))))
+
+  for{
+    a <- ParseSucceed("AAAB", Input("AAABCD", 4))
+    b <- ParseSucceed(a+"AAB", Input("AABCD", 4))
+  } yield (b+"A")
 
 }
 
