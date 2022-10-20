@@ -9,16 +9,36 @@ import scala.util.Using
 
 object SimpleWebServer {
 
-  def create(): SimpleWebServerBuilder
+  def create(): SimpleWebServerBuilder(port : Option[Int], service : Option[SimpleWebService])
 
-  case class SimpleWebServerBuilder(port, withService) :
-    def listenPort(port:Int): SimpleWebServerBuilder(port, )
-    def withService(service: SimpleWebService): Unit = {
-    }
+  case class SimpleWebServerBuilder(port :Int, service : SimpleWebService) :
+    def listenPort(port:Int): SimpleWebServerBuilder = copy(port=port)
+    def withService(service: SimpleWebService): SimpleWebServerBuilder = copy(service=service)
 
-    @tailrec
+
+
+
     def runForever(): Unit = {
-      runForever()
+
+      @tailrec
+      def recursiveRunForever(): Unit = {
+        Using(server.accept()) { client =>
+          println(">>> Get request from a client")
+          val request = readGetRequestFrom(client)
+          println("")
+          val response = call(requete, service)
+          println(">>> Sending response...")
+          sendResponseFrom(client, response, ZonedDateTime.now())
+        }.fold(error => println(s">>> client connection failure: ${error.getMessage}"),
+          _ => ()
+        )
+        recursiveRunForever()
+      }
+
+      Using(ServerSocket(port).accept()) { server =>
+        recursiveRunForever()
+      }.get
+
     }
   //case class ImmutableListenPort(port: Int):
   //  def port(port: Int): ImmutableListenPort = copy(port)
