@@ -1,12 +1,28 @@
 package fr.esiee.simplewebserver
 
+import java.io.{PrintWriter, StringWriter}
+import java.net.ServerSocket
+import java.net.Socket
+import scala.io.Source
+import scala.annotation.tailrec
+import scala.util.Using
+
 object SimpleWebServer {
 
-  def create()
-  
-  def listenPort(port : ) :val port = port
-  def withService(service)
-  def runForever()
+  def create(): SimpleWebServerBuilder
+
+  case class SimpleWebServerBuilder(port, withService) :
+    def listenPort(port:Int): SimpleWebServerBuilder(port, )
+    def withService(service: SimpleWebService): Unit = {
+    }
+
+    @tailrec
+    def runForever(): Unit = {
+      runForever()
+    }
+  //case class ImmutableListenPort(port: Int):
+  //  def port(port: Int): ImmutableListenPort = copy(port)
+
 
   def readGetRequestFrom(client: Socket): List[String] = {
     val source = Source.fromInputStream(client.getInputStream)

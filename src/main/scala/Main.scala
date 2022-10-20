@@ -7,7 +7,7 @@ import scala.util.Using
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-object WebServerMain {
+object WebServerMain_test {
 
   val dateTimeFormatter: DateTimeFormatter =
     DateTimeFormatter.RFC_1123_DATE_TIME

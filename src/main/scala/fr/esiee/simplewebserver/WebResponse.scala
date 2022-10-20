@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter
 
 class WebResponse {
 
-  def createOkWithBody(content : text, type_rep : xxx):
+
 
 
   def sendResponseFrom(client: Socket, now: ZonedDateTime): Unit = {
@@ -26,4 +26,8 @@ class WebResponse {
     printer.print("\r\n")
     printer.flush()
   }
+}
+
+object WebResponse {
+  def createOkWithBody(content : String, type_rep : String): Unit = ()
 }
