@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 import scala.annotation.tailrec
 import ParseResult.*
+import Parser.createParser
 
 // Common interface for parsers
 trait Parser[A]:
@@ -42,8 +43,18 @@ object Parser:
   def int: Parser[Int] = createParser(parse_integer)
 
   /** parse exactly the string s */
+  def parse_string(input: Input, s: String): ParseResult[String] = {
+    val current_string = input.current(s.length())
+    val len = input.data.length() - 1
+    if (current_string == s)
+      ParseSucceed(input.data.substring(input.offset, input.offset + s.length()), input.next(s.length()))
+    else if (input.offset == len)
+      ParseFailure(input)
+    else
+      parse_string(input.next(1), s)
+  }
 
-  def string(s: String): Parser[String] = createParser()
+  def string(s: String): Parser[String] = createParser(input => parse_string(input, s))
 
   /** parse according to a regular expression */
   def regex(r: String): Parser[String] = createParser(???)
@@ -88,6 +99,14 @@ def main(): Unit =
   println(Parser.int.parse("-12a"))
 
   println(Parser.int.parse("12-a"))
+
+  println(Parser.string("AB").parse("ABC"))
+
+  println(Parser.string("AC").parse("ABC"))
+
+  println(Parser.string("B").parse("ABC"))
+
+
 
 
 =======
