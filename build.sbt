@@ -4,7 +4,11 @@ lazy val root = project
   .in(file("."))
   .settings(
 <<<<<<< HEAD
+<<<<<<< HEAD
     name := "Parser Combinator", // TODO: name your project
+=======
+    name := "Parser_combinator", // TODO: name your project
+>>>>>>> julesA
 =======
     name := "Parser_combinator", // TODO: name your project
 >>>>>>> julesA
