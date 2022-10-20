@@ -101,4 +101,10 @@ def main(): Unit =
 
   println(Parser.string("AB").parse("ABC"))
 
+  println(Parser.string("AC").parse("ABC"))
+
+  println(Parser.string("B").parse("ABC"))
+
+
+
 
