@@ -3,14 +3,39 @@ val scala3Version = "3.2.0"
 lazy val root = project
   .in(file("."))
   .settings(
-    name := "My beautiful project", // TODO: name your project
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    name := "Parser_combinator", // TODO: name your project
+=======
+<<<<<<< HEAD
+>>>>>>> julesA
+<<<<<<< HEAD
+    name := "Parser Combinator", // TODO: name your project
+=======
+    name := "Parser_combinator", // TODO: name your project
+>>>>>>> julesA
+=======
+    name := "Parser_combinator", // TODO: name your project
+>>>>>>> julesA
+<<<<<<< HEAD
+=======
+>>>>>>> julesC
+>>>>>>> julesA
     version := "0.1.0-SNAPSHOT",
     developers := List( // TODO: replace the following developer by your team developers
       Developer(
-        id    = "johndoe",
-        name  = "John Doe",
-        email = "john.doe@gmail.com",
-        url   = url("https://github.com/johndoe")
+<<<<<<< HEAD
+        id    = "ptitchev",
+        name  = "Jules Chevenet",
+        email = "jules.chevenet@edu.esiee.fr",
+        url   = url("https://github.com/ptitchev/education-scala-project")
+=======
+        id    = "JAndretti",
+        name  = "Andretti Jules",
+        email = "Jules.andretti@edu.esiee.fr",
+        url   = url("https://github.com/ptitchev/education-scala-project/tree/julesA")
+>>>>>>> main
       )
     ),
     scalaVersion := scala3Version,

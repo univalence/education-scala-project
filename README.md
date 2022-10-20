@@ -1,4 +1,6 @@
-# My beautiful project
+## Project of the unit "development in Scala" 
+# Subject : Parser combinator
 
-Here, you can explain the Why? What? How? of your project for others and in this case for your teacher 😉.
+Group : Jules Andretti, Jules Chevenet, Liza Alekseeva, Shayan Arnal
 
+### Ressources : 
