@@ -3,7 +3,11 @@ val scala3Version = "3.2.0"
 lazy val root = project
   .in(file("."))
   .settings(
+<<<<<<< HEAD
     name := "Parser Combinator", // TODO: name your project
+=======
+    name := "Parser_combinator", // TODO: name your project
+>>>>>>> julesA
     version := "0.1.0-SNAPSHOT",
     developers := List( // TODO: replace the following developer by your team developers
       Developer(
