@@ -1,4 +1,6 @@
 import ParseResult.*
+import scala.util.matching.Regex
+
 // Common interface for parsers
 trait Parser[A]:
   /** parse with this and then parse with pb. */
@@ -32,14 +34,16 @@ case class Input(data: String, offset: Int = 0):
 object Parser:
   def createParser[A](f: Input => ParseResult[A]): Parser[A] = input => f(input)
   /** parse an integer. */
-  def Parser_Int(input: Input): ParseResult[Int]={
-  val current_string = input.current(1)
-  if (current_string.forall(Character.isDigit) | (current_string == "-" & input.offset == 0))
-    Parser_Int(input.next(1))
-  else if (input.offset==0)
-    ParseFailure(input)
-  else
-    ParseSucceed(input.data.substring(0,input.offset).toInt,input)
+  def Parser_Int(input: Input): ParseResult[Int]= {
+    val regex = new Regex("^-?[0-9]+")
+    val extractInteger = (regex  findAllIn input.data).mkString("")
+    if (extractInteger.isEmpty)
+      ParseFailure(input)
+    else
+      if (extractInteger.length == input.data.length)
+        ParseSucceed(extractInteger.toInt, input.copy(offset = input.data.length-1))
+        else
+        ParseSucceed(extractInteger.toInt, input.copy(offset = extractInteger.length))
   }
 
   def int: Parser[Int] = createParser(Parser_Int)
@@ -56,5 +60,10 @@ enum ParseResult[+A]:
   def map[B](f: A => B): ParseResult[B] = ???
   def flatMap[B](f: A => ParseResult[B]): ParseResult[B] = ???
 
+
 @main
-def _01_main(): Unit = println(Parser.int.parse("12-a"))
+def _01_main(): Unit = {
+  val x = new Regex("^-?[0-9]+")
+  val myself = "-8912a45"
+  println(Parser.int.parse("12"))
+}
