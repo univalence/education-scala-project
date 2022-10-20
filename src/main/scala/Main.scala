@@ -42,7 +42,7 @@ object Parser:
 
   /** parse exactly the string s */
 
-  def string(s: String): Parser[String] = createParser(???)
+  def string(s: String): Parser[String] = createParser()
 
   /** parse according to a regular expression */
   def regex(r: String): Parser[String] = createParser(???)
@@ -66,9 +66,8 @@ case class Input(data: String, offset: Int = 0):
 @main
 def main(): Unit =
 
-
-  // example with 1 as step, we start with offset = 2 so current = 3  (it acts  1 by 1 )
-  println("offset start = 2, step = 1 \n step = 1, current : " +Input("123456789",2).current(1))
+// example with 1 as step, we start with offset = 2 so current = 3  (it acts  1 by 1 )
+  println("offset start = 2, step = 1 \n current : " +Input("123456789",2).current(1))
   // example with 3 as step, we start with offset = 2 so current = 345, it takes everything between current(1) and current(3)
   println("offset start = 2, step = 3 \n current : " +Input("123456789",2).current(3))
   // example with 1 as step, we start with offset = 2 so current = 3 and next = 4  (it acts like 1 by 1 example)
