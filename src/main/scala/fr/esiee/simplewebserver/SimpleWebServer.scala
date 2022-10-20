@@ -9,14 +9,12 @@ import scala.util.Using
 
 object SimpleWebServer {
 
-  def create(): SimpleWebServerBuilder(port : Option[Int], service : Option[SimpleWebService])
+  def create(): SimpleWebServerBuilder = SimpleWebServerBuilder(port=None , service=None)
 
-  case class SimpleWebServerBuilder(port :Int, service : SimpleWebService) :
+  case class SimpleWebServerBuilder(port : Option[Int], service : Option[SimpleWebService]) :
     def listenPort(port:Int): SimpleWebServerBuilder = copy(port=port)
     def withService(service: SimpleWebService): SimpleWebServerBuilder = copy(service=service)
-
-
-
+    
 
     def runForever(): Unit = {
 
