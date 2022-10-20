@@ -1,12 +1,15 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 @main // Common interface for parsers
 =======
 import scala.annotation.tailrec
 import ParseResult.*
 
 =======
+=======
+>>>>>>> main
 import scala.annotation.tailrec
 import ParseResult.*
 import Parser.createParser
@@ -113,6 +116,7 @@ def main(): Unit =
   println(Parser.string("AC").parse("ABC"))
 
   println(Parser.string("B").parse("ABC"))
+<<<<<<< HEAD
 
 
 
@@ -369,3 +373,5 @@ def main(): Unit =
 =======
 >>>>>>> julesC
 >>>>>>> julesA
+=======
+>>>>>>> main
