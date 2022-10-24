@@ -15,7 +15,7 @@ object MyWebServer {
 class MyWebService extends SimpleWebService {
   // utilisateur qui va réécrire les fonctions comme ils le souhaitent
   // ex ci-dessous, néanmoins fonction createOkwithBody n'est pas encore def
-  //override def get(request: WebRequest): WebResponse = {
-  //  WebResponse.createOkWithBody("hello", "text/html")
-  //}
+  override def get(request: WebRequest): WebResponse = {
+    WebResponse(r_statusCode = 200, r_contentType =  "application/json", r_content = """{"response": "hello"}""")
+  }
 }

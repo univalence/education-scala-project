@@ -98,9 +98,10 @@ object SimpleWebServer {
 
     printer.print(s"HTTP/1.1 ${response.statusCode} ${response.status}\r\n")
     printer.print(s"Date: ${fDate} ${cTime}\r\n")
+    printer.print(response.headers)
     printer.print(s"Content-Type: ${response.contentType}\r\n")
     printer.print("\r\n")
-    printer.print(response.headers)
+    printer.print(response.status)
     printer.print("\r\n")
     printer.print(response.content)
 
