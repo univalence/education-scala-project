@@ -1,22 +1,21 @@
+import fr.esiee.simplewebserver.SimpleWebServer
 import fr.esiee.simplewebserver.SimpleWebService
 import fr.esiee.simplewebserver.WebResponse
 import fr.esiee.simplewebserver.WebRequest
-import fr.esiee.simplewebserver.SimpleWebServer
 
 object MyWebServer {
   def main(args: Array[String]): Unit = {
     val service = new MyWebService
 
     SimpleWebServer
-      .create()
-      .listenPort(8080)
-      .withService(service)
-      .runForever()
+      .create(8081, service)
   }
 }
 
 class MyWebService extends SimpleWebService {
-  override def get(request: WebRequest): WebResponse = {
-    WebResponse.createOkWithBody("hello", "text/html")
-  }
+  // utilisateur qui va réécrire les fonctions comme ils le souhaitent
+  // ex ci-dessous, néanmoins fonction createOkwithBody n'est pas encore def
+  //override def get(request: WebRequest): WebResponse = {
+  //  WebResponse.createOkWithBody("hello", "text/html")
+  //}
 }

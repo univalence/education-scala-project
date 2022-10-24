@@ -1,33 +1,22 @@
 package fr.esiee.simplewebserver
-import java.net.ServerSocket
-import java.net.Socket
-import scala.io.Source
-import java.io.{PrintWriter, StringWriter}
-import scala.util.Using
 
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
+class WebResponse(r_statusCode : Int, r_headers : String = "", r_contentType : String = "", r_content : String = "") {
+  val statusCode : Int = r_statusCode
+  val status : String =
+    statusCode match {
+      case 200 => "OK"
+      case 404 => "Not Found"
+      case 405 => "Method Not Allowed"
+      case 500 => "Internal Server Error"
+    }
+  val headers : String = r_headers
+  val contentType : String = r_contentType
+  val content : String = r_content
 
-class WebResponse {
-
-
-
-
-  def sendResponseFrom(client: Socket, now: ZonedDateTime): Unit = {
-    val printer = new PrintWriter(client.getOutputStream)
-    val dateTimeFormatter: DateTimeFormatter =
-      DateTimeFormatter.RFC_1123_DATE_TIME
-
-    printer.print("HTTP/1.1 200 OK\r\n")
-    printer.print(s"Date: ${dateTimeFormatter.format(now)}\r\n")
-    printer.print("Content-Type: text/html \r\n")
-    printer.print("\r\n")
-    printer.print("""{"response": "hello"}""")
-    printer.print("\r\n")
-    printer.flush()
-  }
-}
-
-object WebResponse {
-  def createOkWithBody(content : String, type_rep : String): Unit = ()
+  //def createOkWithBody(message : String, message_type : String) = {
+  //  statusCode = 200
+  //  status = "OK"
+  //  content = message
+  //  contentType = message_type
+  //}
 }

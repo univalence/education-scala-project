@@ -1,18 +1,11 @@
 package fr.esiee.simplewebserver
 
-import java.net.Socket
-import scala.io.Source
+enum Method :
+  case GET, POST, PUT, DELETE
 
-class WebRequest {
-
-
-  def readGetRequestFrom(client: Socket): List[String] = {
-    val source = Source.fromInputStream(client.getInputStream)
-    source
-      .getLines()
-      .takeWhile(_.trim.nonEmpty)
-      .toList
-  }
-  
-  
+class WebRequest(r_method : Method, r_path : String, r_headers : List[String], r_content : List[String] = List[String]()) {
+  val path : String = r_path
+  val method : Method = r_method
+  val headers : List[String] = r_headers
+  val content : List[String] = r_content
 }
