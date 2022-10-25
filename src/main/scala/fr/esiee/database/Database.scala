@@ -1,4 +1,4 @@
-package fr.esiee.simplewebserver
+package fr.esiee.database
 
 import scala.collection.mutable
 

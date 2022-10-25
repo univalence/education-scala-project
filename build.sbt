@@ -32,5 +32,6 @@ lazy val root = project
     )
     ),
     scalaVersion := scala3Version,
-    libraryDependencies ++= Seq("org.scalameta" %% "munit" % "0.7.29" % Test)
+    libraryDependencies ++= Seq("org.scalameta" %% "munit" % "0.7.29" % Test),
+    libraryDependencies += "com.google.code.gson" % "gson" % "2.9.1"
   )

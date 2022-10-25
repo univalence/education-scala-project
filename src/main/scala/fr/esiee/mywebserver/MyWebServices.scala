@@ -1,6 +1,7 @@
 package fr.esiee.mywebserver
 
-import fr.esiee.simplewebserver.{Database, SimpleWebService, WebRequest, WebResponse}
+import fr.esiee.database.Database
+import fr.esiee.simplewebserver.{SimpleWebService, WebRequest, WebResponse}
 
 object MyWebServices {
   class MyWebService extends SimpleWebService {
