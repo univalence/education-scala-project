@@ -6,6 +6,9 @@ object MyWebServer {
     val service = new MyWebService
 
     SimpleWebServer
-      .create(50000, service)
+      .create(8081, service)
+      .listenPort(8081)
+      .withService(service)
+      .runForever()
   }
 }

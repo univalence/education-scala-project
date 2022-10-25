@@ -58,27 +58,47 @@ object SimpleWebServer {
 
   // lit la requête HTTP du client (navigateur)
   // et le transforme en WebRequete
+  def parseParameter(parameter: String): WebParameter = {
+    val param = parameter.split('=') // récupération des clés et leur valeur
+    WebParameter(param.head, param.last) // format clé-valeur
+  }
+
+  def getParameters(parameters: Option[String]): Seq[WebParameter] = {
+    parameters
+      .map(_.split('&').map(parseParameter).toSeq) // quand on a plusieurs paramètres
+      .getOrElse(Seq.empty[WebParameter]) // sinon
+  }
+
+
+  // lit la requête HTTP du client (navigateur)
+  // et le transforme en WebRequete
   def createWebRequest(client: Socket): WebRequest = {
     val source = Source.fromInputStream(client.getInputStream)
 
-    val request = source
+    val request_HTTP = source
       .getLines()
       .takeWhile(_.trim.nonEmpty)
       .toList
 
+    val request = request_HTTP.head.split(' ') // pour récuperer la request
+    val apiRoute = request(1).split('?') // split sur le "?" pour savoir si c'est une recherche
+
     // récupère les features qu'il faut
-    val method : Method = request.head.takeWhile(_ != ' ') match {
-      case "GET"  => Method.GET
-      case "POST"   => Method.POST
+    val method: Method = request(0) match {
+      case "GET" => Method.GET
+      case "POST" => Method.POST
       case "PUT" => Method.PUT
       case "DELETE" => Method.DELETE
     }
-    val pathStart = request.head.indexOf(" ")+1
-    val pathEnd = request.head.indexOf(" HTTP")
-    val path : String = request.head.substring(pathStart, pathEnd)
-    val header : List[String] = request.drop(1)
 
-    WebRequest(method, path, header)
+    WebRequest(
+      r_method = method, // type de la requête (GET, POST, PUT, DELETE)
+      r_path = request(1), // route (user)
+      r_parameters = getParameters(if (apiRoute.length > 1) apiRoute.lastOption else None), // obtention des paramètres de la requête
+      r_headers = request_HTTP.drop(1),
+      r_content = None // pour POST, json comportant ce que nous voulons POST
+    )
+
   }
 
   // récupère le Webrequest et fait l'opération associé
