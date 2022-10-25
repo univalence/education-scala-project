@@ -1,9 +1,7 @@
 package fr.esiee.simplewebserver
 
-import scala.language.postfixOps
-
 //enum Accepted_type :
-//  case plain/text, text/html, application/json
+//  case plain, html, json
 
 class WebResponse(r_statusCode : Int, r_headers : String = "", r_contentType : String = "", r_content : String = "") {
   val statusCode : Int = r_statusCode
@@ -13,19 +11,13 @@ class WebResponse(r_statusCode : Int, r_headers : String = "", r_contentType : S
       case 404 => "Not Found"
       case 405 => "Method Not Allowed"
       case 500 => "Internal Server Error"
+      case _ => "Status Code not Defined"
     }
   val headers : String = r_headers
-  val contentType : String = r_contentType
-  val content : String= r_content
-    //contentType match {
-    //  case plain/text => r_content
-    //  case text/html =>
-    //}
-
-  //def createOkWithBody(message : String, message_type : String) = {
-  //  statusCode = 200
-  //  status = "OK"
-  //  content = message
-  //  contentType = message_type
+  val contentType : String = r_contentType //match {
+  //  case plain => "plain/text"
+  //  case html => "text/html"
+  //  case json => "application/json"
   //}
+  val content : String= r_content
 }

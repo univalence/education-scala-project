@@ -1,9 +1,9 @@
 package fr.esiee.simplewebserver
 
-import fr.esiee.simplewebserver.Method
 import fr.esiee.simplewebserver.WebResponse
 import fr.esiee.simplewebserver.WebRequest
 import fr.esiee.simplewebserver.SimpleWebService
+import fr.esiee.simplewebserver.Method
 
 import java.io.{PrintWriter, StringWriter}
 import java.net.ServerSocket
@@ -17,39 +17,44 @@ import java.time.*
 
 object SimpleWebServer {
 
-  def create(sws_port : Int , sws_service : SimpleWebService) = {
-    val port = sws_port
-    val service = sws_service
+  def create(sws_port : Int , sws_service : SimpleWebService) : SimpleWebServerBuilder = SimpleWebServerBuilder(sws_port , sws_service)
+    //
 
-    Using(ServerSocket(port)) { server =>
-      // while(True)
-      @tailrec
-      def recursiveRunForever(): Unit = {
-        // pour s'assurer que cleint se fermera :
-        Using(server.accept()) { client =>
-          println(">>> Get request from a client")
-          val request = createWebRequest(client)
-          // lit la requête HTTP du client (navigateur)
-          // et le transforme en WebRequete
-          println("")
-          val response = call(request, service)
-          // récupère le Webrequest et fait l'opération associé
-          // retourne donc un Webresponse
-          println(">>> Sending response...")
-          sendResponse(client, response)
-          // convertie le Webresponse en réponse HTTP du server
-        }.fold(
-          error => println(s">>> client connection failure: ${error.getMessage}"),
-          // si error, print message ci-dessus
-          // sinon ci-dessous
-          _ => ()
-        )
-        recursiveRunForever() // s'appelle récursivement
-      }
-      recursiveRunForever()
-    }.get
+  case class SimpleWebServerBuilder(port : Int, service : SimpleWebService) :
+    // ce qu'on veut comme paramètre :
+    // port : Option[Int], service : Option[SimpleWebService]
 
-  }
+    def listenPort(port:Int): SimpleWebServerBuilder = copy(port= port) //copy(port=Option(port))
+    def withService(service: SimpleWebService): SimpleWebServerBuilder = copy(service= service) //copy(service= Option(service))
+    def runForever(): Unit = {
+      Using(ServerSocket(port)) { server =>
+        // while(True)
+        @tailrec
+        def recursiveRunForever(): Unit = {
+          // pour s'assurer que cleint se fermera :
+          Using(server.accept()) { client =>
+            println(">>> Get request from a client")
+            val request = createWebRequest(client)
+            // lit la requête HTTP du client (navigateur)
+            // et le transforme en WebRequete
+            println("")
+            val response = call(request, service)
+            // récupère le Webrequest et fait l'opération associé
+            // retourne donc un Webresponse
+            println(">>> Sending response...")
+            sendResponse(client, response)
+            // convertie le Webresponse en réponse HTTP du server
+          }.fold(
+            error => println(s">>> client connection failure: ${error.getMessage}"),
+            // si error, print message ci-dessus
+            // sinon ci-dessous
+            _ => ()
+          )
+          recursiveRunForever() // s'appelle récursivement
+        }
+        recursiveRunForever()
+      }.get
+    }
 
   // lit la requête HTTP du client (navigateur)
   // et le transforme en WebRequete

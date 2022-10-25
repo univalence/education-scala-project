@@ -9,6 +9,9 @@ object MyWebServer {
 
     SimpleWebServer
       .create(8081, service)
+      .listenPort(8081)
+      .withService(service)
+      .runForever()
   }
 }
 
@@ -17,5 +20,6 @@ class MyWebService extends SimpleWebService {
   // ex ci-dessous, néanmoins fonction createOkwithBody n'est pas encore def
   override def get(request: WebRequest): WebResponse = {
     WebResponse(r_statusCode = 200, r_contentType =  "application/json", r_content = """{"response": "hello"}""")
+    //WebResponse(r_statusCode = 200, r_contentType =  "text/html", r_content = "<b> Hello <b/>")
   }
 }
