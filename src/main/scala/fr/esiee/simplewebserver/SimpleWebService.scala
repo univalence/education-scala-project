@@ -1,9 +1,6 @@
 package fr.esiee.simplewebserver
-
-import fr.esiee.simplewebserver.WebResponse
-import fr.esiee.simplewebserver.WebRequest
-
 trait SimpleWebService:
+
   def get(request: WebRequest): WebResponse = {
     WebResponse(405)
   }

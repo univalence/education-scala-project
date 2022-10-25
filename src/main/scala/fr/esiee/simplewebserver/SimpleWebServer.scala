@@ -72,7 +72,6 @@ object SimpleWebServer {
     val pathEnd = request.head.indexOf(" HTTP")
     val path : String = request.head.substring(pathStart, pathEnd)
     val header : List[String] = request.drop(1)
-    //val content : String = ??
 
     WebRequest(method, path, header)
   }
@@ -101,9 +100,7 @@ object SimpleWebServer {
     printer.print(response.headers)
     printer.print(s"Content-Type: ${response.contentType}\r\n")
     printer.print("\r\n")
-    printer.print(response.status)
-    printer.print("\r\n")
-    printer.print(response.content)
+    printer.print(s"\n${response.content}")
 
     printer.flush()
   }

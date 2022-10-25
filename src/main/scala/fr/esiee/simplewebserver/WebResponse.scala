@@ -2,10 +2,8 @@ package fr.esiee.simplewebserver
 
 import scala.language.postfixOps
 
-//enum Accepted_type :
-//  case plain/text, text/html, application/json
 
-class WebResponse(r_statusCode : Int, r_headers : String = "", r_contentType : String = "", r_content : String = "") {
+class WebResponse(r_statusCode : Int, r_headers : String = "", r_contentType: String = "", r_content: String = "") {
   val statusCode : Int = r_statusCode
   val status : String =
     statusCode match {
@@ -15,8 +13,14 @@ class WebResponse(r_statusCode : Int, r_headers : String = "", r_contentType : S
       case 500 => "Internal Server Error"
     }
   val headers : String = r_headers
-  val contentType : String = r_contentType
-  val content : String= r_content
+  //TODO: optimiser le pattern-matching
+  val contentType: String = r_contentType match {
+    case "plain/text" => r_contentType
+    case "application/json" => r_contentType
+    case "text/html" => r_contentType
+    case _ => "Not a valid content type."
+  }
+  val content: String = r_content
     //contentType match {
     //  case plain/text => r_content
     //  case text/html =>
