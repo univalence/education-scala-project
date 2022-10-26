@@ -17,10 +17,10 @@ class Database[V] {
     /**
      * Returns Some with a user if id has been found or None.
      */
-    def findFrom(key: String): Option[V] = {
-        database.get(key)
-        println(s"in find from $key")
-    }
+    //def findFrom(key: String): Option[V] = {
+     //   database.get(key)
+     //   println(s"in find from $key")
+    //}
 
     /**
      * Delete a user. It returns Some if id existed or None.
