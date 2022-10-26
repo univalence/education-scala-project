@@ -10,7 +10,7 @@ class Database {
     val database: mutable.Map[String, User] = mutable.Map(
         "1" -> User("1", "Mel", 21),
         "2" -> User("2", "Isa", 22),
-        "3" -> User("3", "Axel", 22),
+        "3" -> User("3", "Axel", 21),
         "4" -> User("4", "Samy", 24)
     )
 
