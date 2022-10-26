@@ -40,14 +40,12 @@ class Database {
         database.values.toSeq
     }
 
-
-    // à définir
     def findFromParameters(parameters: Seq[WebParameter]): Seq[User] = {
         parameters.flatMap { parameter =>
             (parameter.key match {
-                case "age" => database.filter(_._2.age == parameter.value.toInt)
-                case "name" => database.filter(_._2.name == parameter.value)
-                case "id" => database.filter(_._2.id == parameter.value)
+                case "age" => database.filter(user => user._2.age  == parameter.value.toInt)
+                case "name" => database.filter(user => user._2.name == parameter.value)
+                case "id" => database.filter(user => user._2.id == parameter.value)
                 case _ => Map.empty[String, User]
             }).values
         }

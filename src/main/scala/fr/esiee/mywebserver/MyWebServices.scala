@@ -25,7 +25,7 @@ object MyWebServices {
     }
 
     //def addUser(route: String, content : Seq[User]): Seq[Unit] = {
-    //  database.update()
+    //  database.save()
     //}
 
 
@@ -42,6 +42,7 @@ object MyWebServices {
         r_statusCode = 200,
         r_contentType = "text/html",
         r_content = "<b> Hello world! <b/>"
+        // r_content = new Gson().toJson(addUser(request.path))
       )
     }
 
@@ -50,6 +51,7 @@ object MyWebServices {
         r_statusCode = 200,
         r_contentType = "text/html",
         r_content = "<b> Hello world! <b/>"
+        // r_content = new Gson().toJson(addUser(request.path))
       )
     }
 
