@@ -17,17 +17,17 @@ import java.time.*
 
 object SimpleWebServer {
 
-  def create(sws_port : Int , sws_service : SimpleWebService) : SimpleWebServerBuilder = SimpleWebServerBuilder(sws_port , sws_service)
+  def create(sws_port : Int , sws_service : SimpleWebService) : SimpleWebServerBuilder = SimpleWebServerBuilder(port=None , service=None)
     //
 
-  case class SimpleWebServerBuilder(port : Int, service : SimpleWebService) :
+  case class SimpleWebServerBuilder(port : Option[Int], service : Option[SimpleWebService]) :
     // ce qu'on veut comme paramètre :
     // port : Option[Int], service : Option[SimpleWebService]
 
-    def listenPort(port:Int): SimpleWebServerBuilder = copy(port= port) //copy(port=Option(port))
-    def withService(service: SimpleWebService): SimpleWebServerBuilder = copy(service= service) //copy(service= Option(service))
+    def listenPort(port:Int): SimpleWebServerBuilder = copy(port=Option(port)) //copy(port=Option(port))
+    def withService(service: SimpleWebService): SimpleWebServerBuilder = copy(service= Option(service)) //copy(service= Option(service))
     def runForever(): Unit = {
-      Using(ServerSocket(port)) { server =>
+      Using(ServerSocket(port.get)) { server =>
         // while(True)
         @tailrec
         def recursiveRunForever(): Unit = {
@@ -38,7 +38,7 @@ object SimpleWebServer {
             // lit la requête HTTP du client (navigateur)
             // et le transforme en WebRequete
             println("")
-            val response = call(request, service)
+            val response = call(request, service.get)
             // récupère le Webrequest et fait l'opération associé
             // retourne donc un Webresponse
             println(">>> Sending response...")
