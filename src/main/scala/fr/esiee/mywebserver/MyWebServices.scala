@@ -1,7 +1,7 @@
 package fr.esiee.mywebserver
 
 import fr.esiee.database.Database
-import fr.esiee.simplewebserver.{SimpleWebService, WebRequest, WebResponse}
+import fr.esiee.simplewebserver.{SimpleWebService, WebRequest, WebResponse, WebParameter}
 
 object MyWebServices {
   class MyWebService extends SimpleWebService {
@@ -9,6 +9,15 @@ object MyWebServices {
     // ex ci-dessous, néanmoins fonction createOkwithBody n'est pas encore def*
 
     val database: Database[Int] = new Database[Int]
+
+    def retrieveUsers(route: String, parameters: Seq[WebParameter]): Seq[V] =
+      route match {
+        case r if r.count(_ == '/') == 3 =>
+          Database.findFrom(r.split('/')(3)).toSeq
+        case r if r.count(_ == '?') == 1 =>
+          Database.findFromParameters(parameters)
+        case _ =>
+          Database.getUsers
 
     override def get(request: WebRequest): WebResponse = {
       WebResponse(r_statusCode = 200, r_contentType = "text/html", r_content = "<b> Hello world! <b/>")
