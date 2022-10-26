@@ -32,7 +32,7 @@ class Database[V] {
 
 
     // à définir
-    /**def findFromParameters(parameters: Seq[WebParameter]): Seq[User] = {
+    /**def findFromParameters(parameters: Seq[WebParameter]): Seq[V] = {
         parameters.flatMap { parameter =>
             (parameter.key match {
                 case "age" =>
